@@ -1,15 +1,15 @@
 import { Endianess, Field, Struct, StructLayout } from "./struct";
 
 export const Fields = {
-	Int8: () => new Int8Field(),
-	Int16: (endianness = Endianess.little) => new Int16Field(endianness),
-	Int32: (endianness = Endianess.little) => new Int32Field(endianness),
-	Uint8: () => new Uint8Field(),
-	Uint16: (endianness = Endianess.little) => new Uint16Field(endianness),
-	Uint32: (endianness = Endianess.little) => new Uint32Field(endianness),
-	String: (length: number) => new StringField(length),
-	Struct: <TStruct>(layout: StructLayout<TStruct>) => new StructField(layout),
-	Array: <TStruct>(field: Field<TStruct>, count: number) => new ArrayField(field, count),
+	Int8: (): Field<number> => new Int8Field(),
+	Int16: (endianness = Endianess.little): Field<number> => new Int16Field(endianness),
+	Int32: (endianness = Endianess.little): Field<number> => new Int32Field(endianness),
+	Uint8: (): Field<number> => new Uint8Field(),
+	Uint16: (endianness = Endianess.little): Field<number> => new Uint16Field(endianness),
+	Uint32: (endianness = Endianess.little): Field<number> => new Uint32Field(endianness),
+	String: (length: number): Field<string> => new StringField(length),
+	Struct: <TStruct>(layout: StructLayout<TStruct>): Field<TStruct> => new StructField(layout),
+	Array: <TStruct>(field: Field<TStruct>, count: number): Field<TStruct[]> => new ArrayField(field, count),
 };
 
 // tslint:disable:max-classes-per-file
