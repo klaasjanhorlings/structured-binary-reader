@@ -1,0 +1,36 @@
+{
+  "name": "structured-binary-reader",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "author": "Klaasjan Horlings <k.horlings@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.2",
+    "jest": "^23.5.0",
+    "ts-jest": "^23.1.4",
+    "typescript": "^3.0.3"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "collectCoverage": false,
+    "collectCoverageFrom": [
+      "source/**/*.ts"
+    ],
+    "coverageDirectory": "coverage",
+    "verbose": true
+  }
+}
