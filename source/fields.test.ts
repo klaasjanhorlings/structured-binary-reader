@@ -159,7 +159,13 @@ describe('Fields', () => {
             a: Fields.Uint8(),
             b: Fields.Uint16(),
             c: Fields.Uint16()
-        }
+		}
+		
+		test('length is correct', () => {
+            const field = Fields.Struct(ObjectLayout);
+
+			expect(field.length).toBe(5);
+		})
 
         test('getValue() returns expected object at given index', () => {
             const expected = {
@@ -200,7 +206,7 @@ describe('Fields', () => {
 
         test('getValue() returns expected object at given index', () => {
 			const entryField = Fields.Struct(ObjectLayout);
-			const field = Fields.Array(entryField, 4);
+			const field = Fields.Array(entryField, 8);
 
 			expect(field.getValue(view, 3)).toEqual([
 				{ a: 3, b: 4 },
@@ -212,7 +218,7 @@ describe('Fields', () => {
 
         test('setValue() sets given value at given position', () => {
 			const entryField = Fields.Struct(ObjectLayout);
-			const field = Fields.Array(entryField, 2);
+			const field = Fields.Array(entryField, 4);
 
 			field.setValue(view, 3, [ { a: 5, b: 6 }, { a: 7, b: 8 } ]);
 

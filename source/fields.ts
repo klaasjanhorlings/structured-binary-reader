@@ -9,7 +9,7 @@ export const Fields = {
 	Uint32: (endianness = Endianess.little): Field<number> => new Uint32Field(endianness),
 	String: (length: number): Field<string> => new StringField(length),
 	Struct: <TStruct>(layout: StructLayout<TStruct>): Field<TStruct> => new StructField(layout),
-	Array: <TStruct>(field: Field<TStruct>, count: number): Field<TStruct[]> => new ArrayField(field, count),
+	Array: <TStruct>(field: Field<TStruct>, bufferLength: number): Field<TStruct[]> => new ArrayField(field, bufferLength),
 };
 
 // tslint:disable:max-classes-per-file
@@ -109,20 +109,21 @@ class StructField<TObject extends Struct> implements Field<TObject> {
 class ArrayField<TEntry> implements Field<TEntry[]> {
 	public length: number;
 
-	constructor(public entryField: Field<TEntry>, public count: number) {
-		this.length = entryField.length * count;
+	constructor(public entryField: Field<TEntry>, bufferLength: number) {
+		this.length = bufferLength;
 	}
 
 	public getValue = (view: DataView, offset: number): TEntry[] => {
-		const result = Array(this.count);
-		for (let i = 0; i < this.count; i++) {
+		const count = Math.floor(this.length / this.entryField.length);
+		const result = Array(count);
+		for (let i = 0; i < count; i++) {
 			result[i] = this.entryField.getValue(view, offset + i * this.entryField.length);
 		}
 		return result;
 	}
 
 	public setValue = (view: DataView, offset: number, values: TEntry[]) => {
-		if (values.length !== this.count) {
+		if (values.length !== Math.floor(this.length / this.entryField.length)) {
 			throw new Error("Length of value array must match ArrayField count property");
 		}
 
