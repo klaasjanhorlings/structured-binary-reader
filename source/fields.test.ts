@@ -188,12 +188,38 @@ describe('Fields', () => {
     });
 
     describe('ArrayField', () => {
+		interface ObjectDefinition {
+            a: number;
+            b: number;
+        }
+
+        const ObjectLayout: StructLayout<ObjectDefinition> = {
+            a: Fields.Uint8(),
+            b: Fields.Uint8(),
+        }
+
         test('getValue() returns expected object at given index', () => {
-            throw "Not implemented";
+			const entryField = Fields.Struct(ObjectLayout);
+			const field = Fields.Array(entryField, 4);
+
+			expect(field.getValue(view, 3)).toEqual([
+				{ a: 3, b: 4 },
+				{ a: 5, b: 6 },
+				{ a: 7, b: 8 },
+				{ a: 9, b: 10 },
+			]);
         });
 
         test('setValue() sets given value at given position', () => {
-            throw "Not implemented";
+			const entryField = Fields.Struct(ObjectLayout);
+			const field = Fields.Array(entryField, 2);
+
+			field.setValue(view, 3, [ { a: 5, b: 6 }, { a: 7, b: 8 } ]);
+
+			expect(field.getValue(view, 3)).toEqual([
+				{ a: 5, b: 6 },
+				{ a: 7, b: 8 },
+			]);
         });
     });
 });
