@@ -226,6 +226,30 @@ describe('Fields', () => {
 				{ a: 5, b: 6 },
 				{ a: 7, b: 8 },
 			]);
-        });
+		});
+		
+		test('getValue() on Array of Arrays', () => {
+			const entryField = Fields.Struct(ObjectLayout);
+			const field = Fields.Array(Fields.Array(entryField, 4), 16);
+
+			expect(field.getValue(view, 0)).toEqual([
+				[
+					{ a: 0, b: 1 },
+					{ a: 2, b: 3 },
+				],
+				[
+					{ a: 4, b: 5 },
+					{ a: 6, b: 7 },
+				],
+				[
+					{ a: 8, b: 9 },
+					{ a: 10, b: 11 },
+				],
+				[
+					{ a: 12, b: 13 },
+					{ a: 14, b: 15 },
+				]
+			])
+		})
     });
 });
