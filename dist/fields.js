@@ -22,7 +22,7 @@ exports.Fields = {
     },
     String: function (length) { return new StringField(length); },
     Struct: function (layout) { return new StructField(layout); },
-    Array: function (field, count) { return new ArrayField(field, count); },
+    Array: function (field, bufferLength) { return new ArrayField(field, bufferLength); },
 };
 // tslint:disable:max-classes-per-file
 var Uint8Field = /** @class */ (function () {
@@ -137,26 +137,26 @@ var StructField = /** @class */ (function () {
     return StructField;
 }());
 var ArrayField = /** @class */ (function () {
-    function ArrayField(entryField, count) {
+    function ArrayField(entryField, bufferLength) {
         var _this = this;
         this.entryField = entryField;
-        this.count = count;
         this.getValue = function (view, offset) {
-            var result = Array(_this.count);
-            for (var i = 0; i < _this.count; i++) {
+            var count = Math.floor(_this.length / _this.entryField.length);
+            var result = Array(count);
+            for (var i = 0; i < count; i++) {
                 result[i] = _this.entryField.getValue(view, offset + i * _this.entryField.length);
             }
             return result;
         };
         this.setValue = function (view, offset, values) {
-            if (values.length !== _this.count) {
+            if (values.length !== Math.floor(_this.length / _this.entryField.length)) {
                 throw new Error("Length of value array must match ArrayField count property");
             }
             for (var i = 0; i < values.length; i++) {
                 _this.entryField.setValue(view, offset + i * _this.entryField.length, values[i]);
             }
         };
-        this.length = entryField.length * count;
+        this.length = bufferLength;
     }
     return ArrayField;
 }());

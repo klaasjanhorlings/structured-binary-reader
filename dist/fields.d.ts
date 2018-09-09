@@ -8,5 +8,5 @@ export declare const Fields: {
     Uint32: (endianness?: Endianess) => Field<number>;
     String: (length: number) => Field<string>;
     Struct: <TStruct>(layout: StructLayout<TStruct>) => Field<TStruct>;
-    Array: <TStruct>(field: Field<TStruct>, count: number) => Field<TStruct[]>;
+    Array: <TStruct>(field: Field<TStruct>, bufferLength: number) => Field<TStruct[]>;
 };
