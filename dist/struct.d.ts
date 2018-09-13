@@ -4,7 +4,7 @@ export interface Struct {
 export declare type StructLayout<TStruct extends Struct> = {
     [name in keyof TStruct]: Field<TStruct[name]>;
 };
-export declare enum Endianess {
+export declare const enum Endianess {
     little = 0,
     big = 1,
 }

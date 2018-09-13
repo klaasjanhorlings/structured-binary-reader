@@ -13,12 +13,47 @@ type OrderedFieldOptions = {
 }
 
 export const Fields = {
+	/**
+	 * Reads a signed 1 byte integer
+	 * @param options.offset the number of bytes to offset this field by. Defaults to 0
+	 */
 	Int8: (options?: Int8FieldOptions): Field<number> => new Int8Field(options),
+
+	/**
+	 * Reads a signed 2 byte integer
+	 * @param options.offset the number of bytes to offset this field by. Defaults to 0
+	 * @param options.endianess little (0) or big (1) endianess. Defaults to little
+	 */
 	Int16: (options?: Int16FieldOptions): Field<number> => new Int16Field(options),
+
+	/**
+	 * Reads a signed 4 byte integer
+	 * @param options.offset the number of bytes to offset this field by. Defaults to 0
+	 * @param options.endianess little (0) or big (1) endianess. Defaults to little
+	 */
 	Int32: (options?: Int32FieldOptions): Field<number> => new Int32Field(options),
+
+	/**
+	 * Reads an unsigned 1 byte integer
+	 * @param options.offset the number of bytes to offset this field by. Defaults to 0
+	 * @param options.endianess little (0) or big (1) endianess. Defaults to little
+	 */
 	Uint8: (options?: Int8FieldOptions): Field<number> => new Uint8Field(options),
+	
+	/**
+	 * Reads an unsigned 2 byte integer
+	 * @param options.offset the number of bytes to offset this field by. Defaults to 0
+	 * @param options.endianess little (0) or big (1) endianess. Defaults to little
+	 */
 	Uint16: (options?: Uint16FieldOptions): Field<number> => new Uint16Field(options),
+	
+	/**
+	 * Reads an unsigned 4 byte integer
+	 * @param options.offset the number of bytes to offset this field by. Defaults to 0
+	 * @param options.endianess little (0) or big (1) endianess. Defaults to little
+	 */
 	Uint32: (options?: Uint32FieldOptions): Field<number> => new Uint32Field(options),
+
 	String: (options: StringFieldOptions): Field<string> => new StringField(options),
 	Struct: <TStruct>(layout: StructLayout<TStruct>): Field<TStruct> => new StructField(layout),
 	Array: <TStruct>(field: Field<TStruct>, bufferLength: number): Field<TStruct[]> => new ArrayField(field, bufferLength),
