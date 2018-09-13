@@ -32,6 +32,6 @@
       "source/**/*.ts"
     ],
     "coverageDirectory": "coverage",
-    "verbose": true
+    "verbose": false
   }
 }

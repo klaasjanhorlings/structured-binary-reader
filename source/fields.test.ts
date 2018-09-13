@@ -23,21 +23,21 @@ describe('Fields', () => {
 		test('getValue() uses passed offset', () => {
 			const field = Fields.Int8({ offset: 2 })
 
-			expect(field.getValue(view, 3)).toBe(6);
+			expect(field.getValue(view, 3)).toBe(5);
 		});
 
         test('setValue() sets given value at given position', () => {
             const field = Fields.Int8();
 
             field.setValue(view, 3, -1)
-            expect(field.getValue(view, 3)).toBe(-1);
+			expect(view.getInt8(3)).toBe(-1);
         });
 		
 		test('setValue() uses passed offset', () => {
 			const field = Fields.Int8({ offset: 2 })
 
-            field.setValue(view, 3, -1)
-			expect(field.getValue(view, 5)).toBe(-1);
+			field.setValue(view, 3, -1)
+			expect(view.getInt8(5)).toBe(-1);
 		});
     });
 
@@ -46,20 +46,33 @@ describe('Fields', () => {
             const field = Fields.Int16({ endianess: Endianess.little });
 
             expect(field.getValue(view, 3)).toBe(3 + (4 << 8));
-        });
+		});
 
         test('getValue() returns number at given index (big endian)', () => {
             const field = Fields.Int16({ endianess: Endianess.big });
 
             expect(field.getValue(view, 3)).toBe((3 << 8) + 4);
         });
+		
+		test('getValue() uses passed offset', () => {
+			const field = Fields.Int16({ offset: 2 })
+
+			expect(field.getValue(view, 3)).toBe(5 + (6 << 8));
+		});
 
         test('setValue() sets given value at given position', () => {
             const field = Fields.Int16();
 
             field.setValue(view, 3, -1)
-            expect(field.getValue(view, 3)).toBe(-1);
+            expect(view.getInt16(3)).toBe(-1);
         });
+		
+		test('setValue() uses passed offset', () => {
+			const field = Fields.Int16({ offset: 2 })
+
+            field.setValue(view, 3, -1)
+            expect(view.getInt16(5)).toBe(-1);
+		});
     });
 
     describe('Int32Field', () => {
@@ -74,13 +87,26 @@ describe('Fields', () => {
 
             expect(field.getValue(view, 3)).toBe((3 << 24) + (4 << 16) + (5 << 8) + 6);
         });
+		
+		test('getValue() uses passed offset', () => {
+			const field = Fields.Int32({ offset: 2 })
+
+			expect(field.getValue(view, 3)).toBe(5 + (6 << 8) + (7 << 16) + (8 << 24));
+		});
 
         test('setValue() sets given value at given position', () => {
             const field = Fields.Int32();
 
             field.setValue(view, 3, -1)
-            expect(field.getValue(view, 3)).toBe(-1);
+            expect(view.getInt32(3)).toBe(-1);
         });
+		
+		test('setValue() uses passed offset', () => {
+			const field = Fields.Int32({ offset: 2 })
+
+            field.setValue(view, 3, -1)
+            expect(view.getInt32(5)).toBe(-1);
+		});
     });
 
     describe('Uint8Field', () => {
@@ -88,14 +114,27 @@ describe('Fields', () => {
             const field = Fields.Uint8();
 
             expect(field.getValue(view, 3)).toBe(3);
-        });
+		});
+		
+		test('getValue() uses passed offset', () => {
+			const field = Fields.Uint8({ offset: 2 })
+
+			expect(field.getValue(view, 3)).toBe(5);
+		});
 
         test('setValue() sets given value at given position', () => {
             const field = Fields.Uint8();
 
             field.setValue(view, 3, 0xff)
-            expect(field.getValue(view, 3)).toBe(0xff);
+            expect(view.getUint8(3)).toBe(0xff);
         });
+		
+		test('setValue() uses passed offset', () => {
+			const field = Fields.Uint8({ offset: 2 })
+
+            field.setValue(view, 3, 0xff)
+            expect(view.getUint8(5)).toBe(0xff);
+		});
     });
 
     describe('Uint16Field', () => {
@@ -110,13 +149,26 @@ describe('Fields', () => {
 
             expect(field.getValue(view, 3)).toBe((3 << 8) + 4);
         });
+		
+		test('getValue() uses passed offset', () => {
+			const field = Fields.Uint16({ offset: 2 })
+
+			expect(field.getValue(view, 3)).toBe(5 + (6 << 8));
+		});
 
         test('setValue() sets given value at given position', () => {
             const field = Fields.Uint16();
 
             field.setValue(view, 3, 0xffff)
-            expect(field.getValue(view, 3)).toBe(0xffff);
+            expect(view.getUint16(3)).toBe(0xffff);
         });
+		
+		test('setValue() uses passed offset', () => {
+			const field = Fields.Uint16({ offset: 2 })
+
+            field.setValue(view, 3, 0xffff)
+            expect(view.getUint16(5)).toBe(0xffff);
+		});
     });
 
     describe('Uint32Field', () => {
@@ -131,13 +183,26 @@ describe('Fields', () => {
 
             expect(field.getValue(view, 3)).toBe((3 << 24) + (4 << 16) + (5 << 8) + 6);
         });
+		
+		test('getValue() uses passed offset', () => {
+			const field = Fields.Uint32({ offset: 2 })
+
+			expect(field.getValue(view, 3)).toBe(5 + (6 << 8) + (7 << 16) + (8 << 24));
+		});
 
         test('setValue() sets given value at given position', () => {
             const field = Fields.Uint32();
 
             field.setValue(view, 3, 0xffffffff)
-            expect(field.getValue(view, 3)).toBe(0xffffffff);
+            expect(view.getUint32(3)).toBe(0xffffffff);
         });
+		
+		test('setValue() uses passed offset', () => {
+			const field = Fields.Uint32({ offset: 2 })
+
+            field.setValue(view, 3, 0xffffffff)
+            expect(view.getUint32(5)).toBe(0xffffffff);
+		});
     });
 
     describe('StringFields', () => {
@@ -147,14 +212,14 @@ describe('Fields', () => {
                 view.setInt8(i + 3, str.charCodeAt(i));
             }
 
-            const field = Fields.String(4);
+            const field = Fields.String({ length: 4 });
 
             expect(field.getValue(view, 3)).toBe(str);
         });
 
         test('setValue() sets given value at given position', () => {
             const str = "abcd";
-            const field = Fields.String(4);
+            const field = Fields.String({ length: 4 });
 
             field.setValue(view, 3, str)
             expect(field.getValue(view, 3)).toBe(str);

@@ -38,8 +38,8 @@ class Uint8Field implements Field<number> {
 		}
 	}
 	
-	getValue = (view: DataView, offset: number) => view.getUint8(offset);
-	setValue = (view: DataView, offset: number, value: number) => view.setUint8(offset, value);
+	getValue = (view: DataView, offset: number) => view.getUint8(offset + this.offset);
+	setValue = (view: DataView, offset: number, value: number) => view.setUint8(offset + this.offset, value);
 }
 
 type Uint16FieldOptions = Partial<FieldOptions & OrderedFieldOptions>;
@@ -60,8 +60,8 @@ class Uint16Field implements Field<number> {
 		}
 	}
 
-	public getValue = (view: DataView, offset: number) => view.getUint16(offset, this.endianess === Endianess.little);
-	public setValue = (view: DataView, offset: number, value: number) => view.setUint16(offset, value, this.endianess === Endianess.little);
+	public getValue = (view: DataView, offset: number) => view.getUint16(offset + this.offset, this.endianess === Endianess.little);
+	public setValue = (view: DataView, offset: number, value: number) => view.setUint16(offset + this.offset, value, this.endianess === Endianess.little);
 }
 
 type Uint32FieldOptions = Partial<FieldOptions & OrderedFieldOptions>;
@@ -82,8 +82,8 @@ class Uint32Field implements Field<number> {
 		}
 	}
 
-	public getValue = (view: DataView, offset: number) => view.getUint32(offset, this.endianess === Endianess.little);
-	public setValue = (view: DataView, offset: number, value: number) => view.setUint32(offset, value, this.endianess === Endianess.little);
+	public getValue = (view: DataView, offset: number) => view.getUint32(offset + this.offset, this.endianess === Endianess.little);
+	public setValue = (view: DataView, offset: number, value: number) => view.setUint32(offset + this.offset, value, this.endianess === Endianess.little);
 }
 
 type Int8FieldOptions = Partial<FieldOptions>;
@@ -99,8 +99,8 @@ class Int8Field implements Field<number> {
 		}
 	}
 
-	public getValue = (view: DataView, offset: number) => view.getInt8(offset);
-	public setValue = (view: DataView, offset: number, value: number) => view.setInt8(offset, value);
+	public getValue = (view: DataView, offset: number) => view.getInt8(offset + this.offset);
+	public setValue = (view: DataView, offset: number, value: number) => view.setInt8(offset + this.offset, value);
 }
 
 type Int16FieldOptions = Partial<FieldOptions & OrderedFieldOptions>;
@@ -121,8 +121,8 @@ class Int16Field implements Field<number> {
 		}
 	}
 
-	public getValue = (view: DataView, offset: number) => view.getInt16(offset, this.endianess === Endianess.little);
-	public setValue = (view: DataView, offset: number, value: number) => view.setInt16(offset, value, this.endianess === Endianess.little);
+	public getValue = (view: DataView, offset: number) => view.getInt16(offset + this.offset, this.endianess === Endianess.little);
+	public setValue = (view: DataView, offset: number, value: number) => view.setInt16(offset + this.offset, value, this.endianess === Endianess.little);
 }
 
 type Int32FieldOptions = Partial<FieldOptions & OrderedFieldOptions>;
@@ -143,8 +143,8 @@ class Int32Field implements Field<number> {
 		}
 	}
 
-	public getValue = (view: DataView, offset: number) => view.getInt32(offset, this.endianess === Endianess.little);
-	public setValue = (view: DataView, offset: number, value: number) => view.setInt32(offset, value, this.endianess === Endianess.little);
+	public getValue = (view: DataView, offset: number) => view.getInt32(offset + this.offset, this.endianess === Endianess.little);
+	public setValue = (view: DataView, offset: number, value: number) => view.setInt32(offset + this.offset, value, this.endianess === Endianess.little);
 }
 
 type StringFieldOptions = Partial<FieldOptions> & VariableLengthFieldOptions;
