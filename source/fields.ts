@@ -163,7 +163,7 @@ class StringField implements Field<string> {
 	public getValue = (view: DataView, offset: number): string => {
 		const bytes = [];
 		for (let i = 0; i < this.length; i++) {
-			const char = view.getUint8(i + offset);
+			const char = view.getUint8(i + offset + this.offset);
 			if (char === 0) {
 				break;
 			}
@@ -176,9 +176,9 @@ class StringField implements Field<string> {
 	public setValue = (view: DataView, offset: number, value: string) => {
 		for (let i = 0; i < this.length; i++) {
 			if (i < value.length) {
-				view.setInt8(i + offset, value.charCodeAt(i));
+				view.setInt8(i + offset + this.offset, value.charCodeAt(i));
 			} else {
-				view.setInt8(i + offset, 0);
+				view.setInt8(i + offset + this.offset, 0);
 			}
 		}
 	}
