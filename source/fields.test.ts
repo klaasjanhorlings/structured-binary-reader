@@ -18,7 +18,13 @@ describe('Fields', () => {
             const field = Fields.Int8();
 
             expect(field.getValue(view, 3)).toBe(3);
-        });
+		});
+		
+		test('getValue() uses passed offset', () => {
+			const field = Fields.Int8({ offset: 2 })
+
+			expect(field.getValue(view, 3)).toBe(6);
+		});
 
         test('setValue() sets given value at given position', () => {
             const field = Fields.Int8();
@@ -26,17 +32,24 @@ describe('Fields', () => {
             field.setValue(view, 3, -1)
             expect(field.getValue(view, 3)).toBe(-1);
         });
+		
+		test('setValue() uses passed offset', () => {
+			const field = Fields.Int8({ offset: 2 })
+
+            field.setValue(view, 3, -1)
+			expect(field.getValue(view, 5)).toBe(-1);
+		});
     });
 
     describe('Int16Field', () => {
         test('getValue() returns number at given index (little endian)', () => {
-            const field = Fields.Int16(Endianess.little);
+            const field = Fields.Int16({ endianess: Endianess.little });
 
             expect(field.getValue(view, 3)).toBe(3 + (4 << 8));
         });
 
         test('getValue() returns number at given index (big endian)', () => {
-            const field = Fields.Int16(Endianess.big);
+            const field = Fields.Int16({ endianess: Endianess.big });
 
             expect(field.getValue(view, 3)).toBe((3 << 8) + 4);
         });
@@ -51,13 +64,13 @@ describe('Fields', () => {
 
     describe('Int32Field', () => {
         test('getValue() returns number at given index (little endian)', () => {
-            const field = Fields.Int32(Endianess.little);
+            const field = Fields.Int32({ endianess: Endianess.little });
 
             expect(field.getValue(view, 3)).toBe(3 + (4 << 8) + (5 << 16) + (6 << 24));
         });
 
         test('getValue() returns number at given index (big endian)', () => {
-            const field = Fields.Int32(Endianess.big);
+            const field = Fields.Int32({ endianess: Endianess.big });
 
             expect(field.getValue(view, 3)).toBe((3 << 24) + (4 << 16) + (5 << 8) + 6);
         });
@@ -87,13 +100,13 @@ describe('Fields', () => {
 
     describe('Uint16Field', () => {
         test('getValue() returns number at given index (little endian)', () => {
-            const field = Fields.Uint16(Endianess.little);
+            const field = Fields.Uint16({ endianess: Endianess.little });
 
             expect(field.getValue(view, 3)).toBe(3 + (4 << 8));
         });
 
         test('getValue() returns number at given index (big endian)', () => {
-            const field = Fields.Uint16(Endianess.big);
+            const field = Fields.Uint16({ endianess: Endianess.big });
 
             expect(field.getValue(view, 3)).toBe((3 << 8) + 4);
         });
@@ -108,13 +121,13 @@ describe('Fields', () => {
 
     describe('Uint32Field', () => {
         test('getValue() returns number at given index (little endian)', () => {
-            const field = Fields.Uint32(Endianess.little);
+            const field = Fields.Uint32({ endianess: Endianess.little });
 
             expect(field.getValue(view, 3)).toBe(3 + (4 << 8) + (5 << 16) + (6 << 24));
         });
 
         test('getValue() returns number at given index (big endian)', () => {
-            const field = Fields.Uint32(Endianess.big);
+            const field = Fields.Uint32({ endianess: Endianess.big });
 
             expect(field.getValue(view, 3)).toBe((3 << 24) + (4 << 16) + (5 << 8) + 6);
         });

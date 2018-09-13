@@ -6,7 +6,7 @@ export type StructLayout<TStruct extends Struct> = {
     [name in keyof TStruct]: Field<TStruct[name]>
 };
 
-export enum Endianess {
+export const enum Endianess {
     little,
     big,
 }

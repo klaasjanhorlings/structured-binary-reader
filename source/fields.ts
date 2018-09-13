@@ -1,60 +1,164 @@
 import { Endianess, Field, Struct, StructLayout } from "./struct";
 
+type FieldOptions = {
+	offset: number;
+}
+
+type VariableLengthFieldOptions = {
+	length: number;
+}
+
+type OrderedFieldOptions = {
+	endianess: Endianess;
+}
+
 export const Fields = {
-	Int8: (): Field<number> => new Int8Field(),
-	Int16: (endianness = Endianess.little): Field<number> => new Int16Field(endianness),
-	Int32: (endianness = Endianess.little): Field<number> => new Int32Field(endianness),
-	Uint8: (): Field<number> => new Uint8Field(),
-	Uint16: (endianness = Endianess.little): Field<number> => new Uint16Field(endianness),
-	Uint32: (endianness = Endianess.little): Field<number> => new Uint32Field(endianness),
-	String: (length: number): Field<string> => new StringField(length),
+	Int8: (options?: Int8FieldOptions): Field<number> => new Int8Field(options),
+	Int16: (options?: Int16FieldOptions): Field<number> => new Int16Field(options),
+	Int32: (options?: Int32FieldOptions): Field<number> => new Int32Field(options),
+	Uint8: (options?: Int8FieldOptions): Field<number> => new Uint8Field(options),
+	Uint16: (options?: Uint16FieldOptions): Field<number> => new Uint16Field(options),
+	Uint32: (options?: Uint32FieldOptions): Field<number> => new Uint32Field(options),
+	String: (options: StringFieldOptions): Field<string> => new StringField(options),
 	Struct: <TStruct>(layout: StructLayout<TStruct>): Field<TStruct> => new StructField(layout),
 	Array: <TStruct>(field: Field<TStruct>, bufferLength: number): Field<TStruct[]> => new ArrayField(field, bufferLength),
 };
 
 // tslint:disable:max-classes-per-file
+type Uint8FieldOptions = Partial<FieldOptions>;
 class Uint8Field implements Field<number> {
 	public length = 1;
+	public offset = 0;
+
+	constructor(options?: Uint8FieldOptions) {
+		if (typeof(options) !== "undefined") {
+			if (typeof(options.offset) === "number") {
+				this.offset = options.offset;
+			}
+		}
+	}
+	
 	getValue = (view: DataView, offset: number) => view.getUint8(offset);
 	setValue = (view: DataView, offset: number, value: number) => view.setUint8(offset, value);
 }
 
+type Uint16FieldOptions = Partial<FieldOptions & OrderedFieldOptions>;
 class Uint16Field implements Field<number> {
 	public length = 2;
-	constructor(public endianess = Endianess.little) { }
+	public offset = 0;
+	public endianess: Endianess = Endianess.little;
+
+	constructor(options?: Uint16FieldOptions) { 
+		if (typeof(options) !== "undefined") {
+			if (typeof(options.offset) === "number") {
+				this.offset = options.offset;
+			}
+
+			if (typeof(options.endianess) === "number") {
+				this.endianess = options.endianess;
+			}
+		}
+	}
+
 	public getValue = (view: DataView, offset: number) => view.getUint16(offset, this.endianess === Endianess.little);
 	public setValue = (view: DataView, offset: number, value: number) => view.setUint16(offset, value, this.endianess === Endianess.little);
 }
 
+type Uint32FieldOptions = Partial<FieldOptions & OrderedFieldOptions>;
 class Uint32Field implements Field<number> {
 	public length = 4;
-	constructor(public endianess = Endianess.little) { }
+	public offset = 0;
+	public endianess: Endianess = Endianess.little;
+
+	constructor(options?: Uint32FieldOptions) { 
+		if (typeof(options) !== "undefined") {
+			if (typeof(options.offset) === "number") {
+				this.offset = options.offset;
+			}
+
+			if (typeof(options.endianess) === "number") {
+				this.endianess = options.endianess;
+			}
+		}
+	}
+
 	public getValue = (view: DataView, offset: number) => view.getUint32(offset, this.endianess === Endianess.little);
 	public setValue = (view: DataView, offset: number, value: number) => view.setUint32(offset, value, this.endianess === Endianess.little);
 }
 
+type Int8FieldOptions = Partial<FieldOptions>;
 class Int8Field implements Field<number> {
 	public length = 1;
+	public offset = 0;
+
+	constructor(options?: Int8FieldOptions) { 
+		if (typeof(options) !== "undefined") {
+			if (typeof(options.offset) === "number") {
+				this.offset = options.offset;
+			}
+		}
+	}
+
 	public getValue = (view: DataView, offset: number) => view.getInt8(offset);
 	public setValue = (view: DataView, offset: number, value: number) => view.setInt8(offset, value);
 }
 
+type Int16FieldOptions = Partial<FieldOptions & OrderedFieldOptions>;
 class Int16Field implements Field<number> {
 	public length = 2;
-	constructor(public endianess = Endianess.little) { }
+	public offset = 0;
+	public endianess: Endianess = Endianess.little;
+	
+	constructor(options?: Int16FieldOptions) { 
+		if (typeof(options) !== "undefined") {
+			if (typeof(options.offset) === "number") {
+				this.offset = options.offset;
+			}
+
+			if (typeof(options.endianess) === "number") {
+				this.endianess = options.endianess;
+			}
+		}
+	}
+
 	public getValue = (view: DataView, offset: number) => view.getInt16(offset, this.endianess === Endianess.little);
 	public setValue = (view: DataView, offset: number, value: number) => view.setInt16(offset, value, this.endianess === Endianess.little);
 }
 
+type Int32FieldOptions = Partial<FieldOptions & OrderedFieldOptions>;
 class Int32Field implements Field<number> {
 	public length = 4;
-	constructor(public endianess = Endianess.little) { }
+	public offset = 0;
+	public endianess: Endianess = Endianess.little;
+	
+	constructor(options?: Int32FieldOptions) { 
+		if (typeof(options) !== "undefined") {
+			if (typeof(options.offset) === "number") {
+				this.offset = options.offset;
+			}
+
+			if (typeof(options.endianess) === "number") {
+				this.endianess = options.endianess;
+			}
+		}
+	}
+
 	public getValue = (view: DataView, offset: number) => view.getInt32(offset, this.endianess === Endianess.little);
 	public setValue = (view: DataView, offset: number, value: number) => view.setInt32(offset, value, this.endianess === Endianess.little);
 }
 
+type StringFieldOptions = Partial<FieldOptions> & VariableLengthFieldOptions;
 class StringField implements Field<string> {
-	constructor(public length: number) { }
+	public length: number;
+	public offset = 0;
+
+	constructor(options: StringFieldOptions) { 
+		if (typeof(options.offset) === "number") {
+			this.offset = options.offset;
+		}
+
+		this.length = options.length;
+	}
 
 	public getValue = (view: DataView, offset: number): string => {
 		const bytes = [];
@@ -71,7 +175,11 @@ class StringField implements Field<string> {
 
 	public setValue = (view: DataView, offset: number, value: string) => {
 		for (let i = 0; i < this.length; i++) {
-			view.setInt8(i + offset, value.charCodeAt(i));
+			if (i < value.length) {
+				view.setInt8(i + offset, value.charCodeAt(i));
+			} else {
+				view.setInt8(i + offset, 0);
+			}
 		}
 	}
 }
