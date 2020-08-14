@@ -6,7 +6,7 @@ export declare type StructLayout<TStruct extends Struct> = {
 };
 export declare enum Endianess {
     little = 0,
-    big = 1,
+    big = 1
 }
 export interface Field<TValue> {
     length: number;
