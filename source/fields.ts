@@ -15,8 +15,8 @@ export const Fields = {
 // tslint:disable:max-classes-per-file
 class Uint8Field implements Field<number> {
 	public length = 1;
-	getValue = (view: DataView, offset: number) => view.getUint8(offset);
-	setValue = (view: DataView, offset: number, value: number) => view.setUint8(offset, value);
+	public getValue = (view: DataView, offset: number) => view.getUint8(offset);
+	public setValue = (view: DataView, offset: number, value: number) => view.setUint8(offset, value);
 }
 
 class Uint16Field implements Field<number> {
