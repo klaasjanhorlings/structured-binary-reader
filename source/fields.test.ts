@@ -1,6 +1,7 @@
 import { Fields } from "./fields";
 import { Endianess, StructLayout } from "./struct";
 
+// tslint:disable: no-bitwise
 describe('Fields', () => {
     let buffer: ArrayBuffer;
     let view: DataView;
@@ -130,7 +131,7 @@ describe('Fields', () => {
     describe('StringFields', () => {
         test('getValue() returns expected string at given index', () => {
             const str = "abcd";
-            for (var i = 0; i < str.length; i++) {
+            for (let i = 0; i < str.length; i++) {
                 view.setInt8(i + 3, str.charCodeAt(i));
             }
 
@@ -160,7 +161,7 @@ describe('Fields', () => {
             b: Fields.Uint16(),
             c: Fields.Uint16()
 		}
-		
+
 		test('length is correct', () => {
             const field = Fields.Struct(ObjectLayout);
 
@@ -185,8 +186,8 @@ describe('Fields', () => {
                 b: 0xaaaa,
                 c: 0xffff
             };
-            
-            const field = Fields.Struct(ObjectLayout);            
+
+            const field = Fields.Struct(ObjectLayout);
 
             field.setValue(view, 3, value);
             expect(field.getValue(view, 3)).toEqual(value);
@@ -227,7 +228,7 @@ describe('Fields', () => {
 				{ a: 7, b: 8 },
 			]);
 		});
-		
+
 		test('getValue() on Array of Arrays', () => {
 			const entryField = Fields.Struct(ObjectLayout);
 			const field = Fields.Array(Fields.Array(entryField, 4), 16);
